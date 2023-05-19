@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_chat/constants/constants.dart';
 import 'package:my_chat/providers/auth_provider.dart';
@@ -36,7 +37,7 @@ class HomePageState extends State<HomePage> {
 
   int _limit = 20;
   final int _limitIncrement = 20;
-  String _textSearch = "";
+  final String _textSearch = "";
   bool isLoading = false;
 
   late final AuthProvider authProvider = context.read<AuthProvider>();
@@ -112,15 +113,6 @@ class HomePageState extends State<HomePage> {
       });
     }
   }
-
-  // void onItemMenuPress(PopupChoices choice) {
-  //   if (choice.title == 'Log out') {
-  //     handleSignOut();
-  //   } else {
-  //     Navigator.push(context,
-  //         MaterialPageRoute(builder: (context) => const SettingsPage()));
-  //   }
-  // }
 
   void showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -265,7 +257,17 @@ class HomePageState extends State<HomePage> {
           "Users",
         ),
         centerTitle: true,
-        //actions: <Widget>[buildPopupMenu()],
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              handleSignOut();
+            },
+            icon: const FaIcon(
+              size: 20,
+              FontAwesomeIcons.powerOff,
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: WillPopScope(
@@ -275,7 +277,6 @@ class HomePageState extends State<HomePage> {
               // List
               Column(
                 children: [
-                  //buildSearchBar(),
                   Expanded(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: homeProvider.getStreamFireStore(
@@ -316,7 +317,8 @@ class HomePageState extends State<HomePage> {
 
               // Loading
               Positioned(
-                child: isLoading ? LoadingView() : const SizedBox.shrink(),
+                child:
+                    isLoading ? const LoadingView() : const SizedBox.shrink(),
               )
             ],
           ),
@@ -324,95 +326,6 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  // Widget buildSearchBar() {
-  //   return Container(
-  //     height: 40,
-  //     decoration: BoxDecoration(
-  //       borderRadius: BorderRadius.circular(16),
-  //       color: ColorConstants.greyColor2,
-  //     ),
-  //     padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-  //     margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-  //     child: Row(
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       children: [
-  //         const Icon(Icons.search, color: ColorConstants.greyColor, size: 20),
-  //         const SizedBox(width: 5),
-  //         Expanded(
-  //           child: TextFormField(
-  //             textInputAction: TextInputAction.search,
-  //             controller: searchBarTec,
-  //             onChanged: (value) {
-  //               searchDebouncer.run(() {
-  //                 if (value.isNotEmpty) {
-  //                   btnClearController.add(true);
-  //                   setState(() {
-  //                     _textSearch = value;
-  //                   });
-  //                 } else {
-  //                   btnClearController.add(false);
-  //                   setState(() {
-  //                     _textSearch = "";
-  //                   });
-  //                 }
-  //               });
-  //             },
-  //             decoration: const InputDecoration.collapsed(
-  //               hintText: 'Search nickname (you have to type exactly string)',
-  //               hintStyle:
-  //                   TextStyle(fontSize: 13, color: ColorConstants.greyColor),
-  //             ),
-  //             style: const TextStyle(fontSize: 13),
-  //           ),
-  //         ),
-  //         StreamBuilder<bool>(
-  //             stream: btnClearController.stream,
-  //             builder: (context, snapshot) {
-  //               return snapshot.data == true
-  //                   ? GestureDetector(
-  //                       onTap: () {
-  //                         searchBarTec.clear();
-  //                         btnClearController.add(false);
-  //                         setState(() {
-  //                           _textSearch = "";
-  //                         });
-  //                       },
-  //                       child: const Icon(Icons.clear_rounded,
-  //                           color: ColorConstants.greyColor, size: 20))
-  //                   : const SizedBox.shrink();
-  //             }),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget buildPopupMenu() {
-  //   return PopupMenuButton<PopupChoices>(
-  //     onSelected: onItemMenuPress,
-  //     itemBuilder: (BuildContext context) {
-  //       return choices.map((PopupChoices choice) {
-  //         return PopupMenuItem<PopupChoices>(
-  //             value: choice,
-  //             child: Row(
-  //               children: <Widget>[
-  //                 Icon(
-  //                   choice.icon,
-  //                   color: ColorConstants.primaryColor,
-  //                 ),
-  //                 Container(
-  //                   width: 10,
-  //                 ),
-  //                 Text(
-  //                   choice.title,
-  //                   style: const TextStyle(color: ColorConstants.primaryColor),
-  //                 ),
-  //               ],
-  //             ));
-  //       }).toList();
-  //     },
-  //   );
-  // }
 
   Widget buildItem(BuildContext context, DocumentSnapshot? document) {
     if (document != null) {
@@ -440,15 +353,6 @@ class HomePageState extends State<HomePage> {
                 ),
               );
             },
-            // style: ButtonStyle(
-            //   backgroundColor:
-            //       MaterialStateProperty.all<Color>(ColorConstants.greyColor2),
-            //   shape: MaterialStateProperty.all<OutlinedBorder>(
-            //     const RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.all(Radius.circular(10)),
-            //     ),
-            //   ),
-            // ),
             child: Row(
               children: <Widget>[
                 Material(
@@ -504,22 +408,12 @@ class HomePageState extends State<HomePage> {
                           alignment: Alignment.centerLeft,
                           margin: const EdgeInsets.fromLTRB(10, 0, 0, 5),
                           child: Text(
-                            '${userChat.nickname}',
+                            userChat.nickname,
                             maxLines: 1,
                             style: const TextStyle(
                                 color: ColorConstants.primaryColor),
                           ),
                         ),
-                        // Container(
-                        //   alignment: Alignment.centerLeft,
-                        //   margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        //   child: Text(
-                        //     'About me: ${userChat.aboutMe}',
-                        //     maxLines: 1,
-                        //     style: const TextStyle(
-                        //         color: ColorConstants.primaryColor),
-                        //   ),
-                        // )
                       ],
                     ),
                   ),

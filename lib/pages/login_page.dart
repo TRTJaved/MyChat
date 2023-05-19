@@ -34,83 +34,46 @@ class LoginPageState extends State<LoginPage> {
         break;
     }
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            AppConstants.loginTitle,
-            style: TextStyle(
-              color: ColorConstants.whiteColor,
+      appBar: AppBar(
+        title: const Text(
+          AppConstants.loginTitle,
+          style: TextStyle(
+            color: ColorConstants.whiteColor,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: ElevatedButton.icon(
+              onPressed: () async {
+                authProvider.handleSignIn().then((isSuccess) {
+                  if (isSuccess) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  }
+                }).catchError((error, stackTrace) {
+                  Fluttertoast.showToast(msg: error.toString());
+                  authProvider.handleException();
+                });
+              },
+              icon: const FaIcon(FontAwesomeIcons.google),
+              label: const Text("Sign in with Google"),
             ),
           ),
-          centerTitle: true,
-        ),
-        body: Stack(
-          children: <Widget>[
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  authProvider.handleSignIn().then((isSuccess) {
-                    if (isSuccess) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
-                    }
-                  }).catchError((error, stackTrace) {
-                    Fluttertoast.showToast(msg: error.toString());
-                    authProvider.handleException();
-                  });
-                },
-                icon: const FaIcon(FontAwesomeIcons.google),
-                label: const Text("Sign in with Google"),
-              ),
-              // TextButton(
-              //   onPressed: () async {
-              //     authProvider.handleSignIn().then((isSuccess) {
-              //       if (isSuccess) {
-              //         Navigator.pushReplacement(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) => const HomePage(),
-              //           ),
-              //         );
-              //       }
-              //     }).catchError((error, stackTrace) {
-              //       Fluttertoast.showToast(msg: error.toString());
-              //       authProvider.handleException();
-              //     });
-              //   },
-              //   style: ButtonStyle(
-              //     backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              //       (Set<MaterialState> states) {
-              //         if (states.contains(MaterialState.pressed)) {
-              //           return const Color(0xffdd4b39).withOpacity(0.8);
-              //         }
-              //         return const Color(0xffdd4b39);
-              //       },
-              //     ),
-              //     splashFactory: NoSplash.splashFactory,
-              //     padding: MaterialStateProperty.all<EdgeInsets>(
-              //       const EdgeInsets.fromLTRB(30, 15, 30, 15),
-              //     ),
-              //   ),
-              //   child: const Text(
-              //     'Sign in with Google',
-              //     style: TextStyle(
-              //       fontSize: 16,
-              //       color: Colors.white,
-              //     ),
-              //   ),
-              // ),
-            ),
-            // Loading
-            Positioned(
-              child: authProvider.status == Status.authenticating
-                  ? LoadingView()
-                  : const SizedBox.shrink(),
-            ),
-          ],
-        ));
+          // Loading
+          Positioned(
+            child: authProvider.status == Status.authenticating
+                ? LoadingView()
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'pages.dart';
 
 class SplashPage extends StatefulWidget {
-  SplashPage({super.key});
+  const SplashPage({super.key});
 
   @override
   SplashPageState createState() => SplashPageState();
@@ -45,11 +45,6 @@ class SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Image.asset(
-            //   "images/app_icon.png",
-            //   width: 100,
-            //   height: 100,
-            // ),
             const SizedBox(height: 20),
             Container(
               width: 20,

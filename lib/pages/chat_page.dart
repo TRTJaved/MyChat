@@ -29,7 +29,7 @@ class ChatPageState extends State<ChatPage> {
 
   List<QueryDocumentSnapshot> listMessage = [];
   int _limit = 20;
-  int _limitIncrement = 20;
+  final int _limitIncrement = 20;
   String groupChatId = "";
 
   File? imageFile;
@@ -269,7 +269,6 @@ class ChatPageState extends State<ChatPage> {
         );
       } else {
         // Left (peer message)
-
         return Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: Column(
