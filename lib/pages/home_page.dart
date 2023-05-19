@@ -47,11 +47,6 @@ class HomePageState extends State<HomePage> {
   final StreamController<bool> btnClearController = StreamController<bool>();
   final TextEditingController searchBarTec = TextEditingController();
 
-  final List<PopupChoices> choices = <PopupChoices>[
-    const PopupChoices(title: 'Settings', icon: Icons.settings),
-    const PopupChoices(title: 'Log out', icon: Icons.exit_to_app),
-  ];
-
   @override
   void initState() {
     super.initState();
