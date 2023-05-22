@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "722882893491",
+    "project_id": "gsignup-278b4",
+    "storage_bucket": "gsignup-278b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722882893491:android:d9ecaabcc44e066c1502c6",
+        "android_client_info": {
+          "package_name": "com.example.my_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722882893491-usi41hdl2h63r5mlphdfhfu4814od3iv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpWTtuxEJIEJWum0lRI0r4JATsc3YezkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722882893491-b70r0dnra0mnfh2l4n9ihj630sv259gm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "722882893491-1lgkn1vg2r0npdpjp2jtl9kna0tqa5vh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.geoLocationSignup"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
