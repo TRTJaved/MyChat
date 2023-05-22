@@ -483,37 +483,42 @@ class ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          this.widget.arguments.peerNickname,
-          style: const TextStyle(
-            color: ColorConstants.whiteColor,
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            this.widget.arguments.peerNickname,
+            style: const TextStyle(
+              color: ColorConstants.whiteColor,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: WillPopScope(
-          onWillPop: onBackPress,
-          child: Stack(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  // List of messages
-                  buildListMessage(),
+        body: SafeArea(
+          child: WillPopScope(
+            onWillPop: onBackPress,
+            child: Stack(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    // List of messages
+                    buildListMessage(),
 
-                  // Sticker
-                  isShowSticker ? buildSticker() : const SizedBox.shrink(),
+                    // Sticker
+                    isShowSticker ? buildSticker() : const SizedBox.shrink(),
 
-                  // Input content
-                  buildInput(),
-                ],
-              ),
+                    // Input content
+                    buildInput(),
+                  ],
+                ),
 
-              // Loading
-              buildLoading()
-            ],
+                // Loading
+                buildLoading()
+              ],
+            ),
           ),
         ),
       ),
@@ -701,7 +706,9 @@ class ChatPageState extends State<ChatPage> {
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8),
               child: IconButton(
-                icon: const FaIcon(FontAwesomeIcons.arrowRightLong),
+                icon: const FaIcon(
+                  FontAwesomeIcons.paperPlane,
+                ),
                 onPressed: () => onSendMessage(
                   textEditingController.text,
                   TypeMessage.text,

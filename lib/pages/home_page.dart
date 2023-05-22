@@ -71,15 +71,27 @@ class HomePageState extends State<HomePage> {
   }
 
   void registerNotification() {
-    firebaseMessaging.requestPermission();
+    firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('onMessage: $message');
-      if (message.notification != null) {
-        showNotification(message.notification!);
-      }
-      return;
-    });
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        print('onMessage: $message');
+        if (message.notification != null) {
+          showNotification(message.notification!);
+          Fluttertoast.showToast(msg: "${message.notification!.title}");
+          print("Notification Message :- ${message.notification!.title}");
+        }
+        return;
+      },
+    );
 
     firebaseMessaging.getToken().then((token) {
       print('push token: $token');
@@ -117,23 +129,24 @@ class HomePageState extends State<HomePage> {
   void showNotification(RemoteNotification remoteNotification) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      Platform.isAndroid
-          ? 'com.dfa.flutterchatdemo'
-          : 'com.duytq.flutterchatdemo',
-      'Flutter chat demo',
+      Platform.isAndroid ? 'com.example.my_chat' : 'com.trt.myChat',
+      'My Chat',
       playSound: true,
       enableVibration: true,
       importance: Importance.max,
       priority: Priority.high,
     );
     DarwinNotificationDetails iOSPlatformChannelSpecifics =
-        const DarwinNotificationDetails();
+        const DarwinNotificationDetails(
+      presentAlert: true,
+      presentSound: true,
+    );
     NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
     );
 
-    print(remoteNotification);
+    print("Here is remoteNotification : - $remoteNotification");
 
     await flutterLocalNotificationsPlugin.show(
       0,
